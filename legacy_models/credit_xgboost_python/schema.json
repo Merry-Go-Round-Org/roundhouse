@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "credit_xgboost_python",
+  "contract_version": "1.0.0",
+  "input": {
+    "type": "object",
+    "required": [
+      "row_id",
+      "LIMIT_BAL",
+      "EDUCATION",
+      "MARRIAGE",
+      "PAY_0",
+      "PAY_2",
+      "PAY_3",
+      "PAY_4",
+      "PAY_5",
+      "PAY_6",
+      "BILL_AMT1",
+      "BILL_AMT2",
+      "BILL_AMT3",
+      "BILL_AMT4",
+      "BILL_AMT5",
+      "BILL_AMT6",
+      "PAY_AMT1",
+      "PAY_AMT2",
+      "PAY_AMT3",
+      "PAY_AMT4",
+      "PAY_AMT5",
+      "PAY_AMT6"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "row_id": {
+        "type": "string",
+        "minLength": 1
+      },
+      "LIMIT_BAL": {
+        "type": "number"
+      },
+      "EDUCATION": {
+        "type": "number"
+      },
+      "MARRIAGE": {
+        "type": "number"
+      },
+      "PAY_0": {
+        "type": "number"
+      },
+      "PAY_2": {
+        "type": "number"
+      },
+      "PAY_3": {
+        "type": "number"
+      },
+      "PAY_4": {
+        "type": "number"
+      },
+      "PAY_5": {
+        "type": "number"
+      },
+      "PAY_6": {
+        "type": "number"
+      },
+      "BILL_AMT1": {
+        "type": "number"
+      },
+      "BILL_AMT2": {
+        "type": "number"
+      },
+      "BILL_AMT3": {
+        "type": "number"
+      },
+      "BILL_AMT4": {
+        "type": "number"
+      },
+      "BILL_AMT5": {
+        "type": "number"
+      },
+      "BILL_AMT6": {
+        "type": "number"
+      },
+      "PAY_AMT1": {
+        "type": "number"
+      },
+      "PAY_AMT2": {
+        "type": "number"
+      },
+      "PAY_AMT3": {
+        "type": "number"
+      },
+      "PAY_AMT4": {
+        "type": "number"
+      },
+      "PAY_AMT5": {
+        "type": "number"
+      },
+      "PAY_AMT6": {
+        "type": "number"
+      }
+    }
+  },
+  "output": {
+    "type": "object",
+    "required": [
+      "row_id",
+      "positive_probability"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "row_id": {
+        "type": "string",
+        "minLength": 1
+      },
+      "positive_probability": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1
+      }
+    }
+  }
+}

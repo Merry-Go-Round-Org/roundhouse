@@ -1,0 +1,338 @@
+{
+  "scope": "archived_2026-11-04_artifacts_only_not_current_origin_legacy",
+  "generated_at_utc": "2026-11-04T20:28:44.171158+00:00",
+  "results": [
+    {
+      "model_id": "credit_logistic_python",
+      "artifact_version": "archived_not_latest",
+      "archive_artifact_hash_match": true,
+      "checks": [
+        {
+          "check_id": "fixture_scoring",
+          "status": "PASS",
+          "required": true,
+          "summary": "Trusted scorer reproduced the saved development fixture",
+          "evidence_kind": "fresh_execution",
+          "details": {
+            "rows": 100,
+            "max_absolute_difference": 0.0,
+            "tolerance_absolute": 1e-10
+          }
+        },
+        {
+          "check_id": "reject_missing_row_id",
+          "status": "PASS",
+          "required": true,
+          "summary": "Invalid input rejected",
+          "evidence_kind": "fresh_execution",
+          "details": {
+            "returncode": 2,
+            "negative_case": "missing_row_id"
+          }
+        },
+        {
+          "check_id": "reject_duplicated_row_id",
+          "status": "PASS",
+          "required": true,
+          "summary": "Invalid input rejected",
+          "evidence_kind": "fresh_execution",
+          "details": {
+            "returncode": 2,
+            "negative_case": "duplicated_row_id"
+          }
+        },
+        {
+          "check_id": "reject_target_leakage",
+          "status": "PASS",
+          "required": true,
+          "summary": "Invalid input rejected",
+          "evidence_kind": "fresh_execution",
+          "details": {
+            "returncode": 2,
+            "negative_case": "target_leakage"
+          }
+        }
+      ],
+      "archive_artifact_sha256": "1ae74982acb05318000fcbf0c7e3f0d0bd8eb3a745b7c8a4d906e95ace819287",
+      "current_release_artifact_hash_not_verified": true
+    },
+    {
+      "model_id": "credit_xgboost_python",
+      "artifact_version": "archived_not_latest",
+      "archive_artifact_hash_match": true,
+      "checks": [
+        {
+          "check_id": "fixture_scoring",
+          "status": "PASS",
+          "required": true,
+          "summary": "Trusted scorer reproduced the saved development fixture",
+          "evidence_kind": "fresh_execution",
+          "details": {
+            "rows": 100,
+            "max_absolute_difference": 0.0,
+            "tolerance_absolute": 1e-10
+          }
+        },
+        {
+          "check_id": "reject_missing_row_id",
+          "status": "PASS",
+          "required": true,
+          "summary": "Invalid input rejected",
+          "evidence_kind": "fresh_execution",
+          "details": {
+            "returncode": 2,
+            "negative_case": "missing_row_id"
+          }
+        },
+        {
+          "check_id": "reject_duplicated_row_id",
+          "status": "PASS",
+          "required": true,
+          "summary": "Invalid input rejected",
+          "evidence_kind": "fresh_execution",
+          "details": {
+            "returncode": 2,
+            "negative_case": "duplicated_row_id"
+          }
+        },
+        {
+          "check_id": "reject_target_leakage",
+          "status": "PASS",
+          "required": true,
+          "summary": "Invalid input rejected",
+          "evidence_kind": "fresh_execution",
+          "details": {
+            "returncode": 2,
+            "negative_case": "target_leakage"
+          }
+        }
+      ],
+      "archive_artifact_sha256": "090287477a8d90ef421398caab4bcc6b84bdd987aba5a270f95fd0f764d75850",
+      "current_release_artifact_hash_not_verified": true
+    },
+    {
+      "model_id": "credit_lightgbm_python",
+      "artifact_version": "archived_not_latest",
+      "archive_artifact_hash_match": true,
+      "checks": [
+        {
+          "check_id": "fixture_scoring",
+          "status": "PASS",
+          "required": true,
+          "summary": "Trusted scorer reproduced the saved development fixture",
+          "evidence_kind": "fresh_execution",
+          "details": {
+            "rows": 100,
+            "max_absolute_difference": 0.0,
+            "tolerance_absolute": 1e-10
+          }
+        },
+        {
+          "check_id": "reject_missing_row_id",
+          "status": "PASS",
+          "required": true,
+          "summary": "Invalid input rejected",
+          "evidence_kind": "fresh_execution",
+          "details": {
+            "returncode": 2,
+            "negative_case": "missing_row_id"
+          }
+        },
+        {
+          "check_id": "reject_duplicated_row_id",
+          "status": "PASS",
+          "required": true,
+          "summary": "Invalid input rejected",
+          "evidence_kind": "fresh_execution",
+          "details": {
+            "returncode": 2,
+            "negative_case": "duplicated_row_id"
+          }
+        },
+        {
+          "check_id": "reject_target_leakage",
+          "status": "PASS",
+          "required": true,
+          "summary": "Invalid input rejected",
+          "evidence_kind": "fresh_execution",
+          "details": {
+            "returncode": 2,
+            "negative_case": "target_leakage"
+          }
+        }
+      ],
+      "archive_artifact_sha256": "1cee85059ab992e5484facde8a48c8c747b98a9422e7b2f8c32a6bae68caf7b0",
+      "current_release_artifact_hash_not_verified": true
+    },
+    {
+      "model_id": "fraud_logistic_python",
+      "artifact_version": "archived_not_latest",
+      "archive_artifact_hash_match": true,
+      "checks": [
+        {
+          "check_id": "fixture_scoring",
+          "status": "PASS",
+          "required": true,
+          "summary": "Trusted scorer reproduced the saved development fixture",
+          "evidence_kind": "fresh_execution",
+          "details": {
+            "rows": 100,
+            "max_absolute_difference": 0.0,
+            "tolerance_absolute": 1e-10
+          }
+        },
+        {
+          "check_id": "reject_missing_row_id",
+          "status": "PASS",
+          "required": true,
+          "summary": "Invalid input rejected",
+          "evidence_kind": "fresh_execution",
+          "details": {
+            "returncode": 2,
+            "negative_case": "missing_row_id"
+          }
+        },
+        {
+          "check_id": "reject_duplicated_row_id",
+          "status": "PASS",
+          "required": true,
+          "summary": "Invalid input rejected",
+          "evidence_kind": "fresh_execution",
+          "details": {
+            "returncode": 2,
+            "negative_case": "duplicated_row_id"
+          }
+        },
+        {
+          "check_id": "reject_target_leakage",
+          "status": "PASS",
+          "required": true,
+          "summary": "Invalid input rejected",
+          "evidence_kind": "fresh_execution",
+          "details": {
+            "returncode": 2,
+            "negative_case": "target_leakage"
+          }
+        }
+      ],
+      "archive_artifact_sha256": "f36e77ca02c73747e61a7231a4acadca93e9cf2c5ae13e3aca91c9a2f9273316",
+      "current_release_artifact_hash_not_verified": true
+    },
+    {
+      "model_id": "fraud_xgboost_python",
+      "artifact_version": "archived_not_latest",
+      "archive_artifact_hash_match": true,
+      "checks": [
+        {
+          "check_id": "fixture_scoring",
+          "status": "PASS",
+          "required": true,
+          "summary": "Trusted scorer reproduced the saved development fixture",
+          "evidence_kind": "fresh_execution",
+          "details": {
+            "rows": 100,
+            "max_absolute_difference": 0.0,
+            "tolerance_absolute": 1e-10
+          }
+        },
+        {
+          "check_id": "reject_missing_row_id",
+          "status": "PASS",
+          "required": true,
+          "summary": "Invalid input rejected",
+          "evidence_kind": "fresh_execution",
+          "details": {
+            "returncode": 2,
+            "negative_case": "missing_row_id"
+          }
+        },
+        {
+          "check_id": "reject_duplicated_row_id",
+          "status": "PASS",
+          "required": true,
+          "summary": "Invalid input rejected",
+          "evidence_kind": "fresh_execution",
+          "details": {
+            "returncode": 2,
+            "negative_case": "duplicated_row_id"
+          }
+        },
+        {
+          "check_id": "reject_target_leakage",
+          "status": "PASS",
+          "required": true,
+          "summary": "Invalid input rejected",
+          "evidence_kind": "fresh_execution",
+          "details": {
+            "returncode": 2,
+            "negative_case": "target_leakage"
+          }
+        }
+      ],
+      "archive_artifact_sha256": "914f8f04071733dd4cc5ff830b632202e4383c3635741614d6c557ea8bfd67eb",
+      "current_release_artifact_hash_not_verified": true
+    },
+    {
+      "model_id": "fraud_lightgbm_python",
+      "artifact_version": "archived_not_latest",
+      "archive_artifact_hash_match": true,
+      "checks": [
+        {
+          "check_id": "fixture_scoring",
+          "status": "PASS",
+          "required": true,
+          "summary": "Trusted scorer reproduced the saved development fixture",
+          "evidence_kind": "fresh_execution",
+          "details": {
+            "rows": 100,
+            "max_absolute_difference": 0.0,
+            "tolerance_absolute": 1e-10
+          }
+        },
+        {
+          "check_id": "reject_missing_row_id",
+          "status": "PASS",
+          "required": true,
+          "summary": "Invalid input rejected",
+          "evidence_kind": "fresh_execution",
+          "details": {
+            "returncode": 2,
+            "negative_case": "missing_row_id"
+          }
+        },
+        {
+          "check_id": "reject_duplicated_row_id",
+          "status": "PASS",
+          "required": true,
+          "summary": "Invalid input rejected",
+          "evidence_kind": "fresh_execution",
+          "details": {
+            "returncode": 2,
+            "negative_case": "duplicated_row_id"
+          }
+        },
+        {
+          "check_id": "reject_target_leakage",
+          "status": "PASS",
+          "required": true,
+          "summary": "Invalid input rejected",
+          "evidence_kind": "fresh_execution",
+          "details": {
+            "returncode": 2,
+            "negative_case": "target_leakage"
+          }
+        }
+      ],
+      "archive_artifact_sha256": "141bd6b4310e644033f611f1c9fa67c6fe77524df8df71a417d76b3e59b5b26b",
+      "current_release_artifact_hash_not_verified": true
+    }
+  ],
+  "verification_kind": "archived_development_fixture_scoring_and_invalid_input_rejection",
+  "can_substitute_current_legacy_release_validation": false,
+  "runtime": {
+    "python": "3.13.5",
+    "scikit_learn": "1.8.0",
+    "xgboost": "3.1.3",
+    "lightgbm": "4.6.0"
+  }
+}

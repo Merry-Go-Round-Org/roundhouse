@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "model-risk-backend"
+version = "0.1.0"
+description = "Async API scaffold for the Model Risk Factory"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi>=0.115,<1", "uvicorn[standard]>=0.30,<1",
+  "pydantic>=2.9,<3", "pydantic-settings>=2.5,<3",
+  "sqlalchemy[asyncio]>=2.0,<2.1", "aiosqlite>=0.20,<1",
+  "jsonschema>=4.23,<5", "celery[redis]>=5.4,<6", "httpx>=0.27,<1", "argon2-cffi>=23.1,<26", "python-multipart>=0.0.20,<1", "xlrd>=2.0.1,<3", "openpyxl>=3.1,<4"
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<9"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["app*", "contracts*", "harness*"]
+
+[tool.setuptools.package-data]
+harness = ["templates/*.md", "guides/*.md"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

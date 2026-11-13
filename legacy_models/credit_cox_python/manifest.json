@@ -1,0 +1,41 @@
+{
+  "model_id": "credit_cox_python",
+  "model_version": "0.1.0-demo",
+  "domain": "credit",
+  "algorithm": "cox_ph",
+  "status": "synthetic_demo_only",
+  "positive_class": 1,
+  "prediction_type": "cumulative_event_probability_at_horizon",
+  "artifact_paths": [
+    "model.joblib"
+  ],
+  "artifact_sha256": "2f678c50ccf3b6239675742f1525e40515b89e65fc365134309819f1b07e3900",
+  "feature_order": [
+    "utilisation",
+    "income_to_debt",
+    "delinquencies"
+  ],
+  "data_contract": {
+    "id": "row_id",
+    "duration": "duration",
+    "event": "event",
+    "time_unit": "months"
+  },
+  "horizon": 12,
+  "metrics_reference": "evaluation.json",
+  "integration": "separate survival-model interface; not binary positive_probability",
+  "purpose": "Demonstrate time-to-event survival scoring on synthetic credit-risk data; no production inference.",
+  "intended_use": "Synthetic demonstration and documentation only. Not suitable for financial decisions or operational validation.",
+  "model_owner": "EXL Challenge 04 - Legacy Models (technical steward; human governance owner not assigned)",
+  "risk_tier": "high",
+  "tier_rationale": "Provisional demonstration-tier mapping: financial-risk domain and unsupported synthetic provenance; no deployment or validation approval.",
+  "contract_version": "1.0.0",
+  "name": "credit_cox_python",
+  "language": "Python",
+  "task": "survival_analysis",
+  "entry_point": "score.py",
+  "dataset_id": null,
+  "input_schema": "schema.json",
+  "output_schema": "schema.json#/output",
+  "synthetic_demo": true
+}

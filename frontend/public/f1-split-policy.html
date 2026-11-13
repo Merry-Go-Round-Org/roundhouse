@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light" />
+  <title>F1 Split Policy · Merry Go Round</title>
+  <style>
+    :root { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #20382f; background: #f5f8f5; line-height: 1.65; }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    main { max-width: 850px; padding: 34px 24px 64px; margin: 0 auto; }
+    .eyebrow { text-transform: uppercase; letter-spacing: .11em; font-weight: 700; font-size: 12px; color: #487b60; }
+    h1 { font-size: clamp(26px, 5vw, 36px); line-height: 1.18; letter-spacing: -.03em; margin: 8px 0 12px; }
+    h2 { font-size: 21px; margin: 30px 0 10px; }
+    h3 { font-size: 16px; margin: 21px 0 7px; }
+    p, li { font-size: 15px; }
+    p { margin: 10px 0 16px; }
+    a { color: #175d41; }
+    a:focus-visible { outline: 3px solid #cf8a3a; outline-offset: 3px; }
+    .lead { color: #4d685a; font-size: 16px; }
+    .status { border-left: 4px solid #719887; background: #ebf2ed; border-radius: 8px; padding: 14px 17px; margin: 22px 0; }
+    .status p { margin: 4px 0; }
+    section { background: white; padding: 14px 22px 24px; margin-top: 18px; border: 1px solid #dce7de; border-radius: 12px; }
+    section h2 { margin-top: 8px; }
+    .scroll-table { overflow-x: auto; }
+    table { border-collapse: collapse; width: 100%; min-width: 555px; font-size: 13px; text-align: left; }
+    th, td { padding: 9px 11px; border-bottom: 1px solid #e4eae5; vertical-align: top; }
+    th { background: #f0f5f0; }
+    code { font-size: .89em; background: #eef3ef; padding: 2px 4px; border-radius: 4px; overflow-wrap: anywhere; }
+    ul, ol { padding-left: 21px; }
+    .muted { color: #5f7568; }
+    footer { font-size: 12px; color: #657b6e; margin: 26px 0 0; }
+    @media (max-width: 560px) { main { padding: 22px 12px 45px; } section { padding: 14px 14px 20px; } }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="eyebrow">Dataset upload guidance · F1</div>
+    <h1>F1 Split Policy</h1>
+    <p class="lead">How the platform keeps train, validation and test memberships reproducible while protecting existing legacy models.</p>
+    <div class="status" role="note">
+      <p><strong>Available now:</strong> upload a source dataset and <code>dataset.json</code>, optionally with a split CSV. When the split is omitted for an existing UCI/ULB dataset, the backend has a canonical reuse path.</p>
+      <p><strong>Not enabled yet:</strong> automatic generation for arbitrary new datasets, server-issued new dataset IDs, and authenticated split downloads. These are proposed F1 contract rules, not current uploader guarantees.</p>
+    </div>
+    <section aria-labelledby="upload-rules">
+      <h2 id="upload-rules">What to upload</h2>
+      <ol>
+        <li><strong>Source dataset:</strong> original <code>.csv</code>, <code>.xls</code> or <code>.xlsx</code>, with the expected target and columns.</li>
+        <li><strong>Dataset descriptor:</strong> <code>dataset.json</code>, including the source SHA-256 and dataset metadata. Current UCI/ULB descriptors also require the canonical split hash and partition counts.</li>
+        <li><strong>Split File (Optional):</strong> <code>.csv</code> with headers <code>row_id,split</code> (or <code>row_id,partition</code>) and exactly one assignment per source row. Leave blank for canonical reuse of an existing UCI/ULB dataset.</li>
+      </ol>
+      <p>The split file is not a second dataset and must not be regenerated just because the file picker is empty.</p>
+    </section>
+    <section aria-labelledby="canonical">
+      <h2 id="canonical">Existing UCI/ULB datasets</h2>
+      <p>These <strong>immutable</strong> memberships are the only approved partitions for existing binary legacy models.</p>
+      <div class="scroll-table"><table>
+        <thead><tr><th>Dataset ID</th><th>Train</th><th>Validation</th><th>Test</th></tr></thead>
+        <tbody><tr><td><code>uci_credit</code></td><td>17,981</td><td>6,037</td><td>5,982</td></tr>
+        <tr><td><code>ulb_fraud</code></td><td>162,992</td><td>61,675</td><td>60,140</td></tr></tbody>
+      </table></div>
+      <h3>Canonical split SHA-256</h3>
+      <p>UCI: <code>e8feb21a0c57c5d6c8344af11aaaab079064f259e4861faad8f4aef40fe6d6cb</code></p>
+      <p>ULB: <code>5d9edf4df20e866d3198e74893fd2e1cf75f5fc3c5b4e175efd5a4a478b827fa</code></p>
+      <p><strong>Target F1 safeguard:</strong> compare the original source hash and split hash against a trusted server registry, not just hashes supplied by the uploader. Reject mismatched explicit splits; never silently replace these memberships.</p>
+      <p class="muted">UCI IDs come from the original <code>ID</code> column. ULB IDs follow original zero-based CSV row order, so rearranging ULB source rows is not equivalent.</p>
+    </section>
+    <section aria-labelledby="new">
+      <h2 id="new">New datasets</h2>
+      <p><strong>Proposed deterministic generation rule (not implemented in ingestion yet):</strong></p>
+      <ol>
+        <li>Require a unique, stable, non-empty <code>row_id</code> per record and a binary target with both classes. Do not use uploaded row position as a generic ID.</li>
+        <li>For independent classification data only, allocate approximately <strong>60% train / 20% validation / 20% test</strong> within each class, with a fixed documented seed and versioned algorithm.</li>
+        <li>Rank each row using SHA-256 of a stable seed, algorithm version and row ID; use the row ID to break ties. Serialize the generated CSV in sorted row-ID order so identical inputs and configuration produce identical bytes.</li>
+        <li>Require at least five examples of each class so all three partitions can contain both classes. Reject insufficient or malformed input.</li>
+        <li>Time-dependent, grouped, survival and other specialized datasets need an explicit appropriate policy or uploaded split. Do not silently use stratified random splitting.</li>
+      </ol>
+      <p><strong>Identity proposal:</strong> the backend issues a new dataset family ID in the form <code>ds_&lt;32-hex UUID&gt;</code> and a separate immutable <code>version_id</code>. Existing <code>uci_credit</code> and <code>ulb_fraud</code> IDs never change. Repeated uploads must be idempotent or return a clear conflict rather than rewriting a registered version.</p>
+    </section>
+    <section aria-labelledby="validation">
+      <h2 id="validation">Validation and model safety</h2>
+      <ul>
+        <li>Reject missing, duplicated, unknown or overlapping row IDs, invalid partitions, source/split hash mismatches and incorrect counts.</li>
+        <li>Keep the test partition unavailable to model-development agents; validate leakage boundaries and target/audit-column restrictions.</li>
+        <li>Bind every model to the <strong>exact immutable dataset version and split hash</strong>. A model trained with the frozen UCI/ULB split is not compatible with a newly generated split on the same source.</li>
+        <li>The server response should publish source and split hashes, partition counts, origin (<code>uploaded</code>, <code>canonical_reused</code> or <code>auto_generated</code>), algorithm/seed when generated, and an immutable version ID.</li>
+        <li>Future downloads must be authenticated, scoped to the saved dataset version and byte-verified against the recorded split hash.</li>
+      </ul>
+      <p class="muted">Current backend validations cover many malformed assignments; trusted hash pinning, strict model-to-split binding and new-dataset creation remain outstanding F1 acceptance work.</p>
+    </section>
+    <footer>F1 policy draft · 10 November 2026 · Review with backend, legacy-model and frontend owners before enabling generic generation.</footer>
+  </main>
+</body>
+</html>

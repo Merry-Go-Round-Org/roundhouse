@@ -1,0 +1,8 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+legacy_models/evidence/private_test/
+legacy_models/evidence/*_split_ids.csv
+.DS_Store
+datasets/

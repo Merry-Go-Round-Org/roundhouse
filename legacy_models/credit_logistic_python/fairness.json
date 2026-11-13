@@ -1,0 +1,352 @@
+{
+  "description": "Descriptive historical SEX/AGE UCI group audit; not legal clearance",
+  "model": "credit_logistic_python",
+  "dataset_sha256": "30c6be3abd8dcfd3e6096c828bad8c2f011238620f5369220bd60cfc82700933",
+  "source": "private frozen test predictions",
+  "rows": [
+    {
+      "group": {
+        "SEX": "1"
+      },
+      "n": 2392,
+      "positives": 585,
+      "negatives": 1807,
+      "positive_prediction_rate": 0.2755016722408027,
+      "positive_prediction_rate_ci95_wilson": [
+        0.257968440190653,
+        0.2937548192738295
+      ],
+      "tpr": 0.5299145299145299,
+      "tpr_ci95_wilson": [
+        0.48940635628845053,
+        0.5700323932691918
+      ],
+      "fpr": 0.19313779745434423,
+      "fpr_ci95_wilson": [
+        0.17559513420905873,
+        0.2119823952328432
+      ],
+      "unstable": false
+    },
+    {
+      "group": {
+        "SEX": "2"
+      },
+      "n": 3590,
+      "positives": 732,
+      "negatives": 2858,
+      "positive_prediction_rate": 0.24373259052924792,
+      "positive_prediction_rate_ci95_wilson": [
+        0.2299672033917706,
+        0.2580458263750491
+      ],
+      "tpr": 0.5519125683060109,
+      "tpr_ci95_wilson": [
+        0.5157092734442043,
+        0.5875738442559079
+      ],
+      "fpr": 0.1648005598320504,
+      "fpr_ci95_wilson": [
+        0.1516505415962561,
+        0.17885045660035817
+      ],
+      "unstable": false
+    },
+    {
+      "group": {
+        "age_band": "under_30"
+      },
+      "n": 1949,
+      "positives": 431,
+      "negatives": 1518,
+      "positive_prediction_rate": 0.26782965623396615,
+      "positive_prediction_rate_ci95_wilson": [
+        0.24864066717111563,
+        0.28793205566193897
+      ],
+      "tpr": 0.580046403712297,
+      "tpr_ci95_wilson": [
+        0.5329449110857075,
+        0.6257336109373087
+      ],
+      "fpr": 0.17918313570487485,
+      "fpr_ci95_wilson": [
+        0.1607080057690439,
+        0.19927788871777583
+      ],
+      "unstable": false
+    },
+    {
+      "group": {
+        "age_band": "30_44"
+      },
+      "n": 2993,
+      "positives": 620,
+      "negatives": 2373,
+      "positive_prediction_rate": 0.24022719679251586,
+      "positive_prediction_rate_ci95_wilson": [
+        0.22526086552049704,
+        0.25585950024889603
+      ],
+      "tpr": 0.5145161290322581,
+      "tpr_ci95_wilson": [
+        0.4752075178410333,
+        0.5536459668793108
+      ],
+      "fpr": 0.1685630004214075,
+      "fpr_ci95_wilson": [
+        0.1540388877686676,
+        0.18415845216646304
+      ],
+      "unstable": false
+    },
+    {
+      "group": {
+        "age_band": "45_59"
+      },
+      "n": 977,
+      "positives": 245,
+      "negatives": 732,
+      "positive_prediction_rate": 0.28147389969293757,
+      "positive_prediction_rate_ci95_wilson": [
+        0.2541725380901468,
+        0.3104869732304702
+      ],
+      "tpr": 0.5469387755102041,
+      "tpr_ci95_wilson": [
+        0.4843606569374959,
+        0.608067671159443
+      ],
+      "fpr": 0.19262295081967212,
+      "fpr_ci95_wilson": [
+        0.16568880722135398,
+        0.22276641692271865
+      ],
+      "unstable": false
+    },
+    {
+      "group": {
+        "age_band": "60_plus"
+      },
+      "n": 63,
+      "positives": 21,
+      "negatives": 42,
+      "positive_prediction_rate": 0.2857142857142857,
+      "positive_prediction_rate_ci95_wilson": [
+        0.18903191986400808,
+        0.4070271656740713
+      ],
+      "tpr": 0.5238095238095238,
+      "tpr_ci95_wilson": [
+        0.3236953458284443,
+        0.7165599389846583
+      ],
+      "fpr": 0.16666666666666666,
+      "fpr_ci95_wilson": [
+        0.08315916646398072,
+        0.3060400274464885
+      ],
+      "unstable": true
+    },
+    {
+      "group": {
+        "SEX": "1",
+        "age_band": "under_30"
+      },
+      "n": 657,
+      "positives": 155,
+      "negatives": 502,
+      "positive_prediction_rate": 0.2663622526636225,
+      "positive_prediction_rate_ci95_wilson": [
+        0.23398940589220235,
+        0.30145136299076486
+      ],
+      "tpr": 0.5290322580645161,
+      "tpr_ci95_wilson": [
+        0.4507017449620739,
+        0.6059585253906401
+      ],
+      "fpr": 0.1852589641434263,
+      "fpr_ci95_wilson": [
+        0.15370853943890603,
+        0.22158979862789782
+      ],
+      "unstable": false
+    },
+    {
+      "group": {
+        "SEX": "1",
+        "age_band": "30_44"
+      },
+      "n": 1233,
+      "positives": 282,
+      "negatives": 951,
+      "positive_prediction_rate": 0.2733171127331711,
+      "positive_prediction_rate_ci95_wilson": [
+        0.24917430671699842,
+        0.2988680102562729
+      ],
+      "tpr": 0.5319148936170213,
+      "tpr_ci95_wilson": [
+        0.4736389767328528,
+        0.5893329940731429
+      ],
+      "fpr": 0.19663512092534174,
+      "fpr_ci95_wilson": [
+        0.17261627219872933,
+        0.22309492711111073
+      ],
+      "unstable": false
+    },
+    {
+      "group": {
+        "SEX": "1",
+        "age_band": "45_59"
+      },
+      "n": 470,
+      "positives": 137,
+      "negatives": 333,
+      "positive_prediction_rate": 0.2936170212765957,
+      "positive_prediction_rate_ci95_wilson": [
+        0.25425054171042005,
+        0.336329817207875
+      ],
+      "tpr": 0.5255474452554745,
+      "tpr_ci95_wilson": [
+        0.4423797445910452,
+        0.6073215298675767
+      ],
+      "fpr": 0.1981981981981982,
+      "fpr_ci95_wilson": [
+        0.15892967020649074,
+        0.2443504346128053
+      ],
+      "unstable": false
+    },
+    {
+      "group": {
+        "SEX": "1",
+        "age_band": "60_plus"
+      },
+      "n": 32,
+      "positives": 11,
+      "negatives": 21,
+      "positive_prediction_rate": 0.28125,
+      "positive_prediction_rate_ci95_wilson": [
+        0.15564580497742764,
+        0.45374509425916576
+      ],
+      "tpr": 0.5454545454545454,
+      "tpr_ci95_wilson": [
+        0.280091537409322,
+        0.7872872837754024
+      ],
+      "fpr": 0.14285714285714285,
+      "fpr_ci95_wilson": [
+        0.04981012499725268,
+        0.34636060280620945
+      ],
+      "unstable": true
+    },
+    {
+      "group": {
+        "SEX": "2",
+        "age_band": "under_30"
+      },
+      "n": 1292,
+      "positives": 276,
+      "negatives": 1016,
+      "positive_prediction_rate": 0.26857585139318885,
+      "positive_prediction_rate_ci95_wilson": [
+        0.24512031567254997,
+        0.29340347832288094
+      ],
+      "tpr": 0.6086956521739131,
+      "tpr_ci95_wilson": [
+        0.55000338926801,
+        0.664403726292535
+      ],
+      "fpr": 0.17618110236220472,
+      "fpr_ci95_wilson": [
+        0.1539872799189747,
+        0.20081439605830298
+      ],
+      "unstable": false
+    },
+    {
+      "group": {
+        "SEX": "2",
+        "age_band": "30_44"
+      },
+      "n": 1760,
+      "positives": 338,
+      "negatives": 1422,
+      "positive_prediction_rate": 0.21704545454545454,
+      "positive_prediction_rate_ci95_wilson": [
+        0.19841374251954186,
+        0.2369096562932253
+      ],
+      "tpr": 0.5,
+      "tpr_ci95_wilson": [
+        0.44699635595149445,
+        0.5530036440485055
+      ],
+      "fpr": 0.14978902953586498,
+      "fpr_ci95_wilson": [
+        0.13218535037344212,
+        0.16927976425172367
+      ],
+      "unstable": false
+    },
+    {
+      "group": {
+        "SEX": "2",
+        "age_band": "45_59"
+      },
+      "n": 507,
+      "positives": 108,
+      "negatives": 399,
+      "positive_prediction_rate": 0.2702169625246548,
+      "positive_prediction_rate_ci95_wilson": [
+        0.2333975094573112,
+        0.31049229044676585
+      ],
+      "tpr": 0.5740740740740741,
+      "tpr_ci95_wilson": [
+        0.4798518547874811,
+        0.6632077956204363
+      ],
+      "fpr": 0.18796992481203006,
+      "fpr_ci95_wilson": [
+        0.15267809127728182,
+        0.22921273811019044
+      ],
+      "unstable": false
+    },
+    {
+      "group": {
+        "SEX": "2",
+        "age_band": "60_plus"
+      },
+      "n": 31,
+      "positives": 10,
+      "negatives": 21,
+      "positive_prediction_rate": 0.2903225806451613,
+      "positive_prediction_rate_ci95_wilson": [
+        0.16095800156300613,
+        0.4659232933074994
+      ],
+      "tpr": 0.5,
+      "tpr_ci95_wilson": [
+        0.23659309051256394,
+        0.7634069094874361
+      ],
+      "fpr": 0.19047619047619047,
+      "fpr_ci95_wilson": [
+        0.07667565052761788,
+        0.4000056469020493
+      ],
+      "unstable": true
+    }
+  ]
+}

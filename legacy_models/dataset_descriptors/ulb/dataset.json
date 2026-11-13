@@ -1,0 +1,28 @@
+{
+  "dataset_id": "ulb_fraud",
+  "name": "Credit Card Fraud Detection (ULB)",
+  "version": "ulb-sha256-76274b69",
+  "source_url": "https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud",
+  "license": "ODbL (verify source terms before redistribution)",
+  "source_filename": "creditcard.csv",
+  "sha256": "76274b691b16a6c49d3f159c883398e03ccd6d1ee12d9d8ee38f4b4b98551a89",
+  "row_count": 284807,
+  "target_column": "Class",
+  "positive_class": 1,
+  "row_id_rule": "ulb-{zero_based_original_csv_row_index:06d}; data rows in original CSV order, starting ulb-000000",
+  "audit_only_columns": [],
+  "time_column": "Time",
+  "time_column_semantics": "Elapsed seconds from first transaction, not a calendar timestamp",
+  "split_file": "ulb_split_ids.csv",
+  "split_sha256": "5d9edf4df20e866d3198e74893fd2e1cf75f5fc3c5b4e175efd5a4a478b827fa",
+  "partition_counts": {
+    "train": 162992,
+    "validation": 61675,
+    "test": 60140
+  },
+  "notes": [
+    "Restore split using legacy_models/shared/restore_ulb_split.py; canonical byte hash verified from deterministic generation.",
+    "No demographic protected attribute is available for ULB fairness evaluation.",
+    "Do not expose test partition to the agent."
+  ]
+}

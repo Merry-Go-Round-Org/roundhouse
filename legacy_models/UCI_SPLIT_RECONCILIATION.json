@@ -1,0 +1,36 @@
+{
+  "status": "reconciled_retrained_python_on_r_frozen_split",
+  "data_sha256": "30c6be3abd8dcfd3e6096c828bad8c2f011238620f5369220bd60cfc82700933",
+  "frozen_split_sha256": "e8feb21a0c57c5d6c8344af11aaaab079064f259e4861faad8f4aef40fe6d6cb",
+  "split_counts": {
+    "train": {
+      "rows": 17981,
+      "positives": 3968
+    },
+    "validation": {
+      "rows": 6037,
+      "positives": 1351
+    },
+    "test": {
+      "rows": 5982,
+      "positives": 1317
+    }
+  },
+  "baseline_r_glm_artifact_sha256": "62ccd7de833df40a67d7cf4629a564f0fb6f24af4006fb0cd163edb25e0c3ed8",
+  "retrained_python_artifacts": {
+    "credit_logistic_python": "12e3c8967fe78244825187283aea3d2191648a79adec7815e58fa768e8199f2f",
+    "credit_xgboost_python": "f88a77f6e78265519353db2573cd36dd656aac9f3b1d4a9568dcbe2b2489502d",
+    "credit_lightgbm_python": "1d320048620ab9d6493a21d3e85e8a170608edf6587b1234eb2d9f9d012c6493"
+  },
+  "original_python_test_counts": [
+    5948,
+    1310
+  ],
+  "limitations": [
+    "Historical Python results were on a DIFFERENT partition; do not mix old and new metrics",
+    "R GLM was trained on the existing local frozen split, and its metric counts agree",
+    "Identical counts do not cryptographically prove R used identical IDs: R training execution did not capture split SHA",
+    "Final test metrics were seen before reconciliation; this is not a new untouched holdout",
+    "Repeat uncertainty, fairness and verification diagnostics after retraining before sign-off"
+  ]
+}

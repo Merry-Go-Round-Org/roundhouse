@@ -1,0 +1,31 @@
+name: Legacy Model Reproduction Unit Checks
+
+on:
+  push:
+    branches: [legacy]
+    paths:
+      - 'legacy_models/reproduction/**'
+      - 'legacy_models/tests/test_reproduction_pipeline.py'
+      - '.github/workflows/legacy-reproduction.yml'
+  pull_request:
+    paths:
+      - 'legacy_models/reproduction/**'
+      - 'legacy_models/tests/test_reproduction_pipeline.py'
+      - '.github/workflows/legacy-reproduction.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reproduction-unit-tests:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Compile CLI and tests without importing ML packages
+        run: python -m py_compile legacy_models/reproduction/reproduce.py legacy_models/tests/test_reproduction_pipeline.py
+      - name: Unit-test split pins, fixture alignment, reproducibility gates and isolation
+        run: python -m unittest discover -s legacy_models/tests -p 'test_reproduction_pipeline.py' -v

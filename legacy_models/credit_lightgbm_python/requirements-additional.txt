@@ -1,0 +1,1 @@
+# Optional standard loader: xlrd>=2.0.1 (not installed in this execution). Verified UCI BIFF8 fallback included under shared/xls_biff_reader.py.

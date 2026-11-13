@@ -1,0 +1,222 @@
+name: BE-FE Auth Integration
+
+on:
+  push:
+    branches: [backend-wit]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  frontend:
+    name: Frontend build, unit and browser regression (mock provider)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+      - run: npm run build
+      - run: npm test
+      - run: npx playwright install --with-deps chrome
+      - run: npm run test:browser
+
+  backend:
+    name: Backend cookie authentication regression
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: backend/pyproject.toml
+      - run: python -m pip install -e '.[dev]'
+      - run: python -m pytest tests/test_upload_auth_contracts.py -q -k 'cookie_auth_permissions_and_revocation or example_env_supports_browser_origin or authenticated_gate_three_independence_and_stale_versions'
+      - run: python -m pytest tests/test_monitoring_api_contracts.py -q
+      - run: python -m pytest tests/test_parity.py -q
+
+  live_auth:
+    name: Real browser → FastAPI session and role E2E (no AI)
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: sqlite+aiosqlite:////tmp/backend-wit-auth-ci.sqlite3
+      STORAGE_DIR: /tmp/backend-wit-auth-storage
+      ALLOW_LOCAL_DEMO_AUTH: "false"
+      OPENROUTER_API_KEY: ""
+      AUTH_LIVE_E2E: "true"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install Backend
+        working-directory: backend
+        run: python -m pip install -e '.[dev]'
+      - name: Install Frontend and browser
+        working-directory: frontend
+        run: |
+          npm ci
+          npx playwright install --with-deps chrome
+      - name: Generate test-only password
+        run: echo "AUTH_E2E_PASSWORD=$(openssl rand -hex 24)" >> "$GITHUB_ENV"
+      - name: Seed temporary development and reviewer identities
+        working-directory: backend
+        run: |
+          python - <<'PY'
+          import asyncio, os
+          from uuid import uuid4
+          from argon2 import PasswordHasher
+          from app.main import app
+          from app.db.session import initialize_database, SessionFactory
+          from app.db.auth_tables import UserRecord
+          async def seed():
+              await initialize_database()
+              async with SessionFactory() as session:
+                  password_hash = PasswordHasher().hash(os.environ["AUTH_E2E_PASSWORD"])
+                  for name, role in (("ci-developer", "developer"), ("ci-validator", "validator"), ("ci-approver", "approver")):
+                      session.add(UserRecord(id=str(uuid4()), username=name, role=role, password_hash=password_hash))
+                  await session.commit()
+          asyncio.run(seed())
+          PY
+      - name: Seed test-only Gate 3 review artifact and persisted checkpoint
+        working-directory: backend
+        run: |
+          python - <<'PY'
+          import asyncio
+          from sqlalchemy import select
+          from app.main import app
+          from app.db.session import SessionFactory
+          from app.db.auth_tables import UserRecord
+          from app.db.tables import ModelRecord, runningRecord, ReviewRecord, RunResultRecord
+          from app.services.artifact_service import save_artifact
+          async def seed():
+              async with SessionFactory() as session:
+                  originator = await session.scalar(
+                      select(UserRecord).where(UserRecord.username == "ci-validator")
+                  )
+                  assert originator is not None
+                  model = ModelRecord(
+                      id="ci-review-model", name="CI Review validation fixture",
+                      version="1.0.0", language="Python", dataset_id="uci_credit",
+                      purpose="Ephemeral review workflow E2E only",
+                      lifecycle_status="development",
+                  )
+                  session.add(model)
+                  await session.flush()
+                  run = runningRecord(
+                      id="ci-review-run", model_id=model.id, model_version=model.version,
+                      dataset_id=model.dataset_id, operation="validate",
+                      status="awaiting_review", stage="gate_three",
+                  )
+                  session.add(run)
+                  await session.flush()
+                  artifact = await save_artifact(
+                      session, run,
+                      b'{"summary":{"human_approval_granted":false},"checks":[]}',
+                      "validation-fixture.json", "application/json",
+                  )
+                  review = ReviewRecord(
+                      id="ci-review-gate3", run_id=run.id, artifact_id=artifact.id,
+                      artifact_version=artifact.version, requested_by=originator.id,
+                      status="pending", blockers=[],
+                  )
+                  session.add(review)
+                  await session.flush()
+                  session.add(RunResultRecord(
+                      run_id=run.id, payload={"checkpoint_id": review.id},
+                  ))
+                  await session.commit()
+          asyncio.run(seed())
+          PY
+      - name: Seed ephemeral PSI window and monitoring alert (read-path E2E only)
+        working-directory: backend
+        run: |
+          python - <<'PY'
+          import asyncio
+          from datetime import datetime, timedelta, timezone
+          from app.main import app
+          from app.db.session import SessionFactory
+          from app.db.tables import ModelRecord, runningRecord, MonitoringRecord
+          async def seed():
+              now = datetime.now(timezone.utc)
+              sha = "a" * 64
+              def metric(psi, band):
+                  return {
+                      "status": "PASS" if band == "green" else "REVIEW",
+                      "band": band, "psi": psi,
+                      "reference_rows": 200, "current_rows": 120,
+                      "reason": "PSI describes marginal drift only",
+                  }
+              payload = {
+                  "schema_version": "1.0.0", "kind": "model_stability_window",
+                  "model_id": "credit_test_fixture", "artifact_sha256": sha,
+                  "baseline_sha256": sha, "policy_version": "1.0.0",
+                  "reference_scope": "development",
+                  "reference_rows": 200, "current_rows": 120,
+                  "status": "REVIEW", "band": "red",
+                  "score_band": "green", "feature_band": "red",
+                  "revalidation_required": True, "red_features": ["AGE"],
+                  "score": metric(0.04, "green"),
+                  "features": {"AGE": metric(0.32, "red")},
+                  "limitations": [
+                      "Marginal shift only; no accuracy or calibration assessed",
+                      "Thresholds are project heuristics",
+                  ],
+                  "simulated": True, "shift": {"feature": "AGE", "factor": 2.0},
+                  "dataset_version_id": "test-dataset-version",
+                  "package_sha256": sha, "runtime_image": "sha256:ci-only",
+                  "input_scope": "test_partition_simulation",
+                  "baseline_partition": "train",
+                  "window_label": "CI declared simulated shift",
+              }
+              async with SessionFactory() as session:
+                  model = ModelRecord(
+                      id="ci-psi-model", name="CI monitored model",
+                      version="1.0.0", language="Python", dataset_id="uci_credit",
+                      purpose="Test-only monitoring API fixture",
+                      lifecycle_status="revalidation_due",
+                  )
+                  session.add(model)
+                  await session.flush()
+                  monitor_run = runningRecord(
+                      id="ci-psi-run", model_id=model.id, model_version=model.version,
+                      dataset_id=model.dataset_id, operation="monitor",
+                      status="completed", stage="completed",
+                      started_at=now - timedelta(seconds=14), finished_at=now,
+                  )
+                  session.add(monitor_run)
+                  await session.flush()
+                  session.add(MonitoringRecord(
+                      id="ci-psi-event", model_id=model.id, run_id=monitor_run.id,
+                      payload=payload,
+                  ))
+                  await session.commit()
+          asyncio.run(seed())
+          PY
+      - name: Start Backend on loopback
+        working-directory: backend
+        run: |
+          nohup python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 >/tmp/backend-auth.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:8000/health >/dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/backend-auth.log
+          exit 1
+      - name: Real browser auth and role E2E
+        working-directory: frontend
+        run: npm run test:browser -- auth-live.e2e.ts

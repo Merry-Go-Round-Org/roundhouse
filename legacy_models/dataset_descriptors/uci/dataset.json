@@ -1,0 +1,29 @@
+{
+  "dataset_id": "uci_credit",
+  "name": "Default of Credit Card Clients",
+  "version": "uci-350-sha256-30c6be3a",
+  "source_url": "https://archive.ics.uci.edu/dataset/350/default+of+credit+card+clients",
+  "license": "CC BY 4.0",
+  "source_filename": "default of credit card clients.xls",
+  "sha256": "30c6be3abd8dcfd3e6096c828bad8c2f011238620f5369220bd60cfc82700933",
+  "row_count": 30000,
+  "target_column": "default payment next month",
+  "positive_class": 1,
+  "row_id_rule": "uci-{ID:06d}, where ID is the integer value from the original UCI ID column; preserve original source row IDs",
+  "audit_only_columns": [
+    "SEX",
+    "AGE"
+  ],
+  "time_column": null,
+  "split_file": "uci_split_ids.csv",
+  "split_sha256": "e8feb21a0c57c5d6c8344af11aaaab079064f259e4861faad8f4aef40fe6d6cb",
+  "partition_counts": {
+    "train": 17981,
+    "validation": 6037,
+    "test": 5982
+  },
+  "notes": [
+    "UCI source contains no per-record calendar dates.",
+    "Do not expose test partition to the agent."
+  ]
+}

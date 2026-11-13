@@ -1,0 +1,13 @@
+{
+  "execution_status": "executed_full_data",
+  "data_sha256": "30c6be3abd8dcfd3e6096c828bad8c2f011238620f5369220bd60cfc82700933",
+  "seed": 20261104,
+  "threshold_validation_f1": 0.2492,
+  "train_n": 17981,
+  "train_positive": 3968,
+  "validation_n": 6037,
+  "validation_positive": 1351,
+  "test_n": 5982,
+  "test_positive": 1317,
+  "note": "Independent R evaluation metrics must be computed and reviewed; no numerical parity proof in this file"
+}

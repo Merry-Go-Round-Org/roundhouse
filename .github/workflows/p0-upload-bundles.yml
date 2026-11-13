@@ -1,0 +1,79 @@
+name: P0 Upload Bundle Integrity
+
+on:
+  push:
+    branches: [p0]
+    paths:
+      - 'legacy_models/**'
+      - 'validate_all_models.py'
+      - '.github/workflows/p0-upload-bundles.yml'
+  pull_request:
+    paths:
+      - 'legacy_models/**'
+      - 'validate_all_models.py'
+      - '.github/workflows/p0-upload-bundles.yml'
+
+jobs:
+  build-and-check:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Bundle builder tests (standard library only)
+        run: python -m unittest discover -s legacy_models/tests -p 'test_build_upload_bundles.py' -v
+      - name: PSI and legacy validator regression tests
+        run: |
+          python -m unittest discover -s legacy_models/tests -p 'test_stability.py' -v
+          python -m unittest discover -s legacy_models/tests -p 'test_validate_all_models.py' -v
+      - name: P0 dataset staging unit tests
+        run: python -m unittest discover -s legacy_models/tests -p 'test_prepare_dataset_uploads.py' -v
+      - name: Verify both canonical dataset split deliverables
+        run: |
+          python legacy_models/integration/prepare_dataset_uploads.py --out-dir "$RUNNER_TEMP/p0-datasets"
+          python legacy_models/integration/prepare_dataset_uploads.py --out-dir "$RUNNER_TEMP/p0-datasets" --verify-only
+          python - "$RUNNER_TEMP/p0-datasets" <<'PY'
+          import json
+          import sys
+          from pathlib import Path
+          root = Path(sys.argv[1])
+          report = json.loads((root / "build_report.json").read_text())
+          assert not report["all_upload_ready"], "CI does not have original datasets"
+          assert {r["dataset"] for r in report["datasets"]} == {"uci", "ulb"}
+          for record in report["datasets"]:
+              assert record["descriptor"]["status"] == "PASS"
+              assert record["split"]["status"] == "PASS"
+              assert record["source_status"] == "NOT_VERIFIED"
+              assert not record["upload_ready"]
+          print("Both dataset descriptors/splits verified; original sources intentionally not staged in CI")
+          PY
+      - name: Compile changed sources
+        run: |
+          python -m py_compile validate_all_models.py legacy_models/stability.py legacy_models/integration/monitor_psi.py legacy_models/integration/prepare_dataset_uploads.py legacy_models/integration/audit_p0_upload.py
+      - name: Produce full validation reports with PSI safely unavailable
+        run: |
+          python validate_all_models.py --models-dir legacy_models --policy legacy_models/validation_policy.json --out "$RUNNER_TEMP/p0-validation"
+          python - "$RUNNER_TEMP/p0-validation" <<'PY'
+          import json
+          import sys
+          from pathlib import Path
+          root = Path(sys.argv[1])
+          index = json.loads((root / "validation_index.json").read_text())
+          assert len(index["models"]) == 9
+          for record in index["models"]:
+              report = json.loads((root / record["report_path"]).read_text())
+              checks = {c["check_id"]: c["status"] for c in report["checks"]}
+              expected = ("NOT_APPLICABLE" if record["model_id"] == "credit_cox_python"
+                          else "NOT_ASSESSABLE")
+              assert checks["score_psi"] == expected, record["model_id"]
+              assert checks["feature_psi"] == expected, record["model_id"]
+              assert report["stability"] is None
+          print("PSI absent-data handling: 9/9 reports correctly marked")
+          PY
+      - name: Build nine ZIPs without executing models
+        run: python legacy_models/integration/build_upload_bundles.py
+      - name: Verify regenerated ZIPs
+        run: python legacy_models/integration/build_upload_bundles.py --verify-only

@@ -1,0 +1,2 @@
+legacy_models/**/*.joblib -filter -diff -merge -text
+legacy_models/**/*.rds -filter -diff -merge -text

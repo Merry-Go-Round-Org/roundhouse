@@ -1,0 +1,227 @@
+.proposal-preview {
+  width: min(880px, 100%);
+  margin: 0 auto;
+  padding: 32px 20px 64px;
+  color: #263b33;
+}
+.proposal-preview * {
+  box-sizing: border-box;
+}
+.proposal-preview h1 {
+  font-size: clamp(26px, 4vw, 36px);
+  margin: 8px 0;
+}
+.proposal-preview header > p {
+  margin: 10px 0;
+}
+.proposal-preview-label,
+.proposal-origin {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: #567064;
+}
+.proposal-preview-notice {
+  background: #edf2e8;
+  border: 1px solid #d5e1ce;
+  border-radius: 12px;
+  padding: 14px 18px;
+  margin: 24px 0 18px;
+  line-height: 1.5;
+}
+.proposal-preview-contexts,
+.proposal-choice-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.proposal-preview button,
+.proposal-preview select,
+.proposal-preview textarea {
+  font: inherit;
+}
+.proposal-preview button {
+  border: 1px solid #cbd9cf;
+  border-radius: 8px;
+  padding: 10px 15px;
+  background: white;
+  color: #294b3d;
+  cursor: pointer;
+}
+.proposal-preview button[aria-pressed="true"],
+.proposal-preview .button.primary {
+  background: #284f3f;
+  color: white;
+  border-color: #284f3f;
+}
+.proposal-preview button:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+.proposal-preview :is(button, select, textarea, input):focus-visible {
+  outline: 3px solid #bd8430;
+  outline-offset: 3px;
+}
+.proposal-preview-controls {
+  margin: 18px 0;
+  padding: 12px 16px;
+  border: 1px solid #dce4dd;
+  border-radius: 10px;
+}
+.proposal-preview-controls summary,
+.proposal-technical summary {
+  cursor: pointer;
+  color: #466454;
+}
+.proposal-preview-controls label {
+  display: block;
+  margin: 12px 0;
+}
+.proposal-preview select {
+  padding: 8px;
+  margin-left: 10px;
+  max-width: 100%;
+}
+.proposal-card {
+  background: white;
+  border: 1px solid #d6e2da;
+  border-radius: 16px;
+  padding: 26px;
+  overflow-wrap: anywhere;
+}
+.proposal-card-heading {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.proposal-card h2 {
+  margin: 5px 0;
+  font-size: 24px;
+}
+.proposal-card h3 {
+  margin: 24px 0 12px;
+  font-size: 17px;
+}
+.proposal-origin {
+  margin: 0;
+}
+.proposal-status {
+  font-size: 12px;
+  padding: 7px 10px;
+  background: #edf2e8;
+  border-radius: 8px;
+}
+.proposal-status-superseded,
+.proposal-status-expired {
+  background: #fff0d9;
+}
+.proposal-summary {
+  line-height: 1.65;
+  margin: 16px 0;
+}
+.proposal-context {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  background: #f5f8f4;
+  padding: 16px;
+  border-radius: 10px;
+}
+.proposal-card dt {
+  color: #60786a;
+  font-size: 13px;
+  margin-bottom: 5px;
+}
+.proposal-card dd {
+  margin: 0;
+  line-height: 1.5;
+}
+.proposal-fields {
+  display: grid;
+  gap: 16px;
+}
+.proposal-card ul {
+  padding-left: 20px;
+  line-height: 1.7;
+}
+.proposal-card li span {
+  color: #60786a;
+  font-size: 13px;
+  margin-right: 8px;
+}
+.proposal-technical {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid #e1e8e2;
+}
+.proposal-technical pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 12px;
+  background: #f5f8f4;
+  padding: 12px;
+}
+.proposal-decision {
+  margin-top: 24px;
+  padding-top: 4px;
+  border-top: 1px solid #e1e8e2;
+}
+.proposal-decision > p,
+.proposal-unavailable {
+  color: #60786a;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.proposal-decision fieldset {
+  border: 0;
+  margin: 18px 0 0;
+  padding: 0;
+  min-width: 0;
+}
+.proposal-decision legend {
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+.proposal-decision label {
+  display: block;
+  margin: 16px 0;
+  font-size: 14px;
+}
+.proposal-decision textarea {
+  display: block;
+  width: 100%;
+  min-height: 90px;
+  margin-top: 8px;
+  padding: 10px;
+  border: 1px solid #cbd9cf;
+  border-radius: 8px;
+  resize: vertical;
+}
+.proposal-decision .proposal-attestation {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  line-height: 1.5;
+}
+.proposal-preview input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+}
+@media (max-width: 560px) {
+  .proposal-preview {
+    padding: 20px 12px 40px;
+  }
+  .proposal-card {
+    padding: 18px;
+  }
+  .proposal-context {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .proposal-card h2 {
+    font-size: 21px;
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "format_version": 1,
+  "purpose": "Cross-team F1 synthetic split membership/negative assignment fixtures (not real bank records)",
+  "source_ids": [
+    "acct-001",
+    "acct-002",
+    "acct-003",
+    "acct-004",
+    "acct-005",
+    "acct-006"
+  ],
+  "valid_split_csv": "row_id,split\nacct-001,train\nacct-002,train\nacct-003,validation\nacct-004,validation\nacct-005,test\nacct-006,test\n",
+  "invalid": [
+    {
+      "name": "duplicate_split_id",
+      "split_csv": "row_id,split\nacct-001,train\nacct-002,train\nacct-003,validation\nacct-004,validation\nacct-005,test\nacct-006,test\nacct-001,train\n"
+    },
+    {
+      "name": "overlapping_partitions",
+      "split_csv": "row_id,split\nacct-001,train\nacct-002,train\nacct-003,validation\nacct-004,validation\nacct-005,test\nacct-006,test\nacct-001,validation\n"
+    },
+    {
+      "name": "missing_assignment",
+      "split_csv": "row_id,split\nacct-001,train\nacct-002,train\nacct-003,validation\nacct-004,validation\nacct-005,test\n"
+    },
+    {
+      "name": "unknown_assignment",
+      "split_csv": "row_id,split\nacct-001,train\nacct-002,train\nacct-003,validation\nacct-004,validation\nacct-005,test\nacct-006,test\nacct-999,test\n"
+    },
+    {
+      "name": "invalid_partition",
+      "split_csv": "row_id,split\nacct-001,train\nacct-002,train\nacct-003,validation\nacct-004,validation\nacct-005,test\nacct-006,development\n"
+    },
+    {
+      "name": "empty_row_id",
+      "split_csv": "row_id,split\nacct-001,train\nacct-002,train\nacct-003,validation\nacct-004,validation\nacct-005,test\nacct-006,\n"
+    },
+    {
+      "name": "malformed_extra_column",
+      "split_csv": "row_id,split\nacct-001,train\nacct-002,train\nacct-003,validation\nacct-004,validation\nacct-005,test\nacct-006,test\nacct-999,test,unexpected\n"
+    },
+    {
+      "name": "wrong_header",
+      "split_csv": "record,split\nacct-001,train\nacct-002,train\nacct-003,validation\nacct-004,validation\nacct-005,test\nacct-006,test\n"
+    },
+    {
+      "name": "missing_partition",
+      "split_csv": "row_id,split\nacct-001,train\nacct-002,train\nacct-003,validation\nacct-004,validation\nacct-005,train\nacct-006,train\n"
+    }
+  ]
+}

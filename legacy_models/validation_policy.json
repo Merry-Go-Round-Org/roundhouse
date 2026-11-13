@@ -1,0 +1,58 @@
+{
+  "policy_version": "1.0.0",
+  "scope": "EXL Challenge 04 legacy-model technical validation; research/demo only",
+  "statuses": [
+    "PASS",
+    "FAIL",
+    "REVIEW",
+    "NOT_ASSESSABLE",
+    "NOT_APPLICABLE"
+  ],
+  "scoring": {
+    "absolute_tolerance": 1e-10,
+    "timeout_seconds": 90,
+    "trusted_execution_opt_in": true,
+    "fixture_rows": "development fixtures only, never final test"
+  },
+  "metric_consistency": {
+    "absolute_tolerance": 0.000001,
+    "test_threshold": "must_equal_validation_selected_threshold",
+    "average_precision": "noninterpolated_sklearn_average_precision_score"
+  },
+  "required_binary_checks": [
+    "artifact_integrity",
+    "schema_contract",
+    "saved_metric_consistency",
+    "fixture_scoring",
+    "reject_missing_row_id",
+    "reject_duplicated_row_id",
+    "reject_target_leakage",
+    "split_provenance"
+  ],
+  "required_extra_checks": {
+    "R_migration": [
+      "migration_parity"
+    ]
+  },
+  "governance": {
+    "model_approval_from_technical_checks": false,
+    "performance_acceptance_thresholds": "not_defined_requires_owner_approval",
+    "fairness_thresholds": "not_defined_requires_owner_approval",
+    "split_provenance": "required_technical_reproduction_or_REVIEW; no_historical_fit_time_attestation_inferred",
+    "ulb_demographic_fairness": "not_assessable_no_protected_attributes",
+    "cox_synthetic": "demo_only_not_binary_credit_validation",
+    "cross_platform_saved_artifact_inference": "nonblocking_review_on_numeric_difference; raw_numeric_parity_still_FAIL_when_difference_exceeds_1e-10; tampered_evidence_is_FAIL",
+    "psi_interpretation": "heuristic_drift_evidence_only; amber_or_red=REVIEW; red_triggers_revalidation; no_auto_approval"
+  },
+  "stability": {
+    "version": "1.0.0",
+    "max_numeric_bins": 10,
+    "max_categories": 20,
+    "max_reference_categories": 1000,
+    "smoothing_alpha": 0.5,
+    "min_reference_rows": 200,
+    "min_current_rows": 100,
+    "green_below": 0.1,
+    "red_above": 0.25
+  }
+}

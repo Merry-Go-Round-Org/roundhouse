@@ -1,0 +1,78 @@
+{
+  "dataset_use": "verified_full_data",
+  "validation_method": "reloaded scoring + saved full-test predictions and labels, no retraining",
+  "models": [
+    {
+      "package": "credit_lightgbm_python",
+      "status": "passed",
+      "fixture_100_reloaded_max_difference": 0.0,
+      "row_alignment": "exact",
+      "test_rows": 5948,
+      "test_positives": 1310,
+      "test_average_precision": 0.5680776508592981,
+      "test_roc_auc": 0.7948827969412982,
+      "artifact_sha256": "1cee85059ab992e5484facde8a48c8c747b98a9422e7b2f8c32a6bae68caf7b0",
+      "all_saved_test_metrics_recomputed": true
+    },
+    {
+      "package": "credit_logistic_python",
+      "status": "passed",
+      "fixture_100_reloaded_max_difference": 0.0,
+      "row_alignment": "exact",
+      "test_rows": 5948,
+      "test_positives": 1310,
+      "test_average_precision": 0.511778010419821,
+      "test_roc_auc": 0.7340475626174747,
+      "artifact_sha256": "1ae74982acb05318000fcbf0c7e3f0d0bd8eb3a745b7c8a4d906e95ace819287",
+      "all_saved_test_metrics_recomputed": true
+    },
+    {
+      "package": "credit_xgboost_python",
+      "status": "passed",
+      "fixture_100_reloaded_max_difference": 0.0,
+      "row_alignment": "exact",
+      "test_rows": 5948,
+      "test_positives": 1310,
+      "test_average_precision": 0.5663209183127852,
+      "test_roc_auc": 0.795104414577223,
+      "artifact_sha256": "090287477a8d90ef421398caab4bcc6b84bdd987aba5a270f95fd0f764d75850",
+      "all_saved_test_metrics_recomputed": true
+    },
+    {
+      "package": "fraud_lightgbm_python",
+      "status": "passed",
+      "fixture_100_reloaded_max_difference": 0.0,
+      "row_alignment": "exact",
+      "test_rows": 60140,
+      "test_positives": 77,
+      "test_average_precision": 0.8000403482712706,
+      "test_roc_auc": 0.9861963120541613,
+      "artifact_sha256": "141bd6b4310e644033f611f1c9fa67c6fe77524df8df71a417d76b3e59b5b26b",
+      "all_saved_test_metrics_recomputed": true
+    },
+    {
+      "package": "fraud_logistic_python",
+      "status": "passed",
+      "fixture_100_reloaded_max_difference": 0.0,
+      "row_alignment": "exact",
+      "test_rows": 60140,
+      "test_positives": 77,
+      "test_average_precision": 0.6940011856413162,
+      "test_roc_auc": 0.9730376178605538,
+      "artifact_sha256": "f36e77ca02c73747e61a7231a4acadca93e9cf2c5ae13e3aca91c9a2f9273316",
+      "all_saved_test_metrics_recomputed": true
+    },
+    {
+      "package": "fraud_xgboost_python",
+      "status": "passed",
+      "fixture_100_reloaded_max_difference": 0.0,
+      "row_alignment": "exact",
+      "test_rows": 60140,
+      "test_positives": 77,
+      "test_average_precision": 0.8073021737112572,
+      "test_roc_auc": 0.9874896510179464,
+      "artifact_sha256": "914f8f04071733dd4cc5ff830b632202e4383c3635741614d6c557ea8bfd67eb",
+      "all_saved_test_metrics_recomputed": true
+    }
+  ]
+}

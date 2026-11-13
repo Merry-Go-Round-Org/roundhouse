@@ -1,0 +1,12 @@
+{
+  "parity_contract_version": "1.0.0",
+  "tolerance_absolute": 1e-08,
+  "tolerance_relative": 0,
+  "row_alignment": "exact_order",
+  "n_rows": 100,
+  "max_absolute_difference": 6.106226635438361e-16,
+  "mean_absolute_difference": 2.3109986146963024e-16,
+  "class_agreement_at_0_5": 1.0,
+  "preprocessing": "R train-only centred/scaled coefficients converted back to original units for Python scoring",
+  "passed": true
+}

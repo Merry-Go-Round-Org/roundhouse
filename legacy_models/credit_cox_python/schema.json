@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "credit_cox_python synthetic survival demo",
+  "contract_version": "1.0.0",
+  "task": "survival_analysis",
+  "input": {
+    "type": "object",
+    "required": [
+      "row_id",
+      "utilisation",
+      "income_to_debt",
+      "delinquencies"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "row_id": {
+        "type": "string",
+        "minLength": 1
+      },
+      "utilisation": {
+        "type": "number"
+      },
+      "income_to_debt": {
+        "type": "number"
+      },
+      "delinquencies": {
+        "type": "number"
+      }
+    }
+  },
+  "output": {
+    "type": "object",
+    "required": [
+      "row_id",
+      "horizon",
+      "time_unit",
+      "survival_probability",
+      "cumulative_event_probability"
+    ],
+    "additionalProperties": false,
+    "properties": {
+      "row_id": {
+        "type": "string",
+        "minLength": 1
+      },
+      "horizon": {
+        "type": "number",
+        "exclusiveMinimum": 0
+      },
+      "time_unit": {
+        "type": "string"
+      },
+      "survival_probability": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1
+      },
+      "cumulative_event_probability": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1
+      }
+    }
+  }
+}

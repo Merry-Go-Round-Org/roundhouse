@@ -1,0 +1,33 @@
+{
+  "status": "synthetic_demo_only",
+  "model_family": "cox_proportional_hazards",
+  "method": "penalized_partial_likelihood_breslow_baseline",
+  "data_kind": "synthetic",
+  "dataset_sha256": "adab206b35991f7690645b240029ac8db92d507057aa554868af3b0cac738012",
+  "seed": 20261104,
+  "time_unit": "months",
+  "horizon": 12.0,
+  "event_definition": "synthetically generated event; 0 is right-censored",
+  "split": {
+    "train": 1500,
+    "validation": 500,
+    "test": 500
+  },
+  "events": {
+    "train": 933,
+    "validation": 311,
+    "test": 311
+  },
+  "c_index": {
+    "train": 0.6339632255561957,
+    "validation": 0.6421059156559291,
+    "test": 0.6321023910688994
+  },
+  "caveats": [
+    "Synthetic demo only, not evidence of real credit-default performance",
+    "C-index assesses ordering, not probability calibration",
+    "Proportional hazards and censoring assumptions not yet tested",
+    "Random stratified split is a demo convenience, not out-of-time validation",
+    "Horizon event risk is NOT an approved 12-month regulatory PD"
+  ]
+}
