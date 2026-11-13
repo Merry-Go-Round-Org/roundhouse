@@ -246,7 +246,7 @@ AUTH_COOKIE_SECURE=false
 # Optional for offline API-only tasks; required for real agent work:
 OPENROUTER_API_KEY=
 # For Docker-backed scoring and agent runs (see "Docker sandbox image" below):
-SCORING_IMAGE=<PUBLIC_IMAGE>@sha256:8083453253c3267caaa0fe36b43a287b9a986d5784148ad40714cd9d3fc2d80e
+SCORING_IMAGE=ghcr.io/merry-go-round-org/sandbox@sha256:8083453253c3267caaa0fe36b43a287b9a986d5784148ad40714cd9d3fc2d80e
 ```
 
 The local defaults are deliberately **not** a public-hosting policy. For a remote HTTPS installation, use secure cookies, a trusted HTTPS origin, secure secret management, and an independently reviewed runtime deployment. Do not set CORS to wildcard or disable the origin guard to resolve login problems.
@@ -258,7 +258,7 @@ The local defaults are deliberately **not** a public-hosting policy. For a remot
 *Route A: pull the published image (recommended; these are the exact bits our recorded evidence used).* No login is needed:
 
 ```bash
-docker pull <PUBLIC_IMAGE>@sha256:8083453253c3267caaa0fe36b43a287b9a986d5784148ad40714cd9d3fc2d80e
+docker pull ghcr.io/merry-go-round-org/sandbox@sha256:8083453253c3267caaa0fe36b43a287b9a986d5784148ad40714cd9d3fc2d80e
 ```
 
 Set the same reference as `SCORING_IMAGE` in `backend/.env`. The image covers linux/amd64 and linux/arm64.
@@ -509,7 +509,7 @@ Soft-deleted records disappear from active portfolio views, but **underlying mod
 
 ### User management
 
-The audited authentication code supports authenticated sign-in/sign-out, an admin-only user listing, creation and disabling. **Re-enabling a disabled account was still an unresolved backend/frontend feature** in the current implementation; do not claim it exists unless verified in a later commit. Separate developer, validator and approver accounts are important for demonstrating genuine review independence.
+The current authentication code supports authenticated sign-in/sign-out, an admin-only user listing, creation and disabling. **Re-enabling a disabled account was still an unresolved backend/frontend feature** in the current implementation; do not claim it exists unless verified in a later commit. Separate developer, validator and approver accounts are important for demonstrating genuine review independence.
 
 ## 9. API and automation reference
 

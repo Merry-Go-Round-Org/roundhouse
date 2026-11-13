@@ -120,7 +120,7 @@ The verified development topology is a **single-machine, multi-process setup**:
 
 The worker's payload is a **run or upload identifier**. The durable record, file paths, actor identity, and current state are resolved server-side. Celery's `worker_prefetch_multiplier=1` and late acknowledgements reduce queued-work ambiguity; the database claim prevents ordinary duplicate deliveries from executing the same run twice. Recovery is not a claim of perfect distributed exactly-once execution.
 
-**Production boundary:** there is no verified public hardened hosting configuration, cloud database schema-upgrade strategy, or multi-node locking design. The sandbox image is public at `<PUBLIC_IMAGE>` and can also be rebuilt from `backend/harness/sandbox_image/`. The local topology should not be described as production-ready.
+**Production boundary:** there is no verified public hardened hosting configuration, cloud database schema-upgrade strategy, or multi-node locking design. The sandbox image is public at `ghcr.io/merry-go-round-org/sandbox` and can also be rebuilt from `backend/harness/sandbox_image/`. The local topology should not be described as production-ready.
 
 ### Browser and origin boundary
 
@@ -364,7 +364,7 @@ These controls **reduce risk** but do not establish formal correctness, regulato
 2. **Cross-platform reproducibility:** some XGBoost artifacts exhibit numerical differences across macOS/Linux or library environments; track the comparison outcome, not a universal PASS.
 3. **Domain scope:** UCI predicts next-month default, not a one-year PD; ULB lacks demographic labels for meaningful demographic fairness assessment. The Cox artifact is a synthetic-only illustration.
 4. **Incomplete generic dataset feature:** canonical two-file split reuse exists; new family IDs and arbitrary deterministic automatic splits were planned but not fully integrated.
-5. **Runtime dependencies:** Docker-backed scoring needs the sandbox image, either pulled from `<PUBLIC_IMAGE>` or built locally (README section 5.3).
+5. **Runtime dependencies:** Docker-backed scoring needs the sandbox image, either pulled from `ghcr.io/merry-go-round-org/sandbox` or built locally (README section 5.3).
 6. **Operational maturity:** SQLite `create_all`, local filesystem artifacts, and a single-machine Celery setup are demo choices, not hardened service architecture.
 7. **Testing maturity:** the 11 November 2026 E2E log counted **70 pass / 5 fail / 9 partial / 2 blocked / 1 inconclusive / 12 unverified**. Subsequent edits require new acceptance evidence; this document is not a claim that all 99 cases passed.
 8. **Governance:** acceptance/fairness thresholds and all human decisions require authorized owners and evidence. Model approval must never be inferred solely from automated checks.
