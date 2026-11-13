@@ -8,7 +8,7 @@ Roundhouse is a research-oriented **Agentic Model Risk Factory** created for **E
 
 [Read the architecture diagram and technical explanation](ARCHITECTURE.md).
 
-> **Publication status — 13 November 2026:** The public `Merry-Go-Round-Org/roundhouse` repository was empty when this documentation was prepared. These two Markdown files are a release-documentation deliverable created from a code/documentation audit of the existing private workspace at source commit `6f0e94dd37b8699617fcddce68437a7168327524`. **The instructions below apply once the application source has been migrated.** If `backend/`, `frontend/`, or `legacy_models/` is missing from a fresh Roundhouse clone, the application has not yet been published there and cannot be installed from that clone. This documentation is not evidence of a deployed service or complete release acceptance.
+> **Submission status, 13 November 2026:** This repository is the full source submitted by Team Merry Go Round for the EXL × UCD Data & AI Hackathon 2026, Challenge 04. It contains the backend and agent harness, the React frontend and the legacy-model workstream. It is a research prototype tested on one machine, not a deployed service. **Demo video:** https://drive.google.com/file/d/1NUnM2Ec1QTMdRQndga7dbbhJOqWfKjUc/view?usp=sharing
 
 ## Table of contents
 
@@ -60,7 +60,7 @@ For the actual process connections, trust boundaries, and data-flow diagrams, se
 
 ## 2. What the system contains
 
-### Expected source layout after migration
+### Source layout
 
 ```text
 roundhouse/
@@ -101,7 +101,7 @@ roundhouse/
 
 ### Included legacy model portfolio
 
-Nine illustrative models are present in the original workstream:
+Nine illustrative models are included in `legacy_models/`:
 
 | Domain | Model directory | Model type |
 | --- | --- | --- |
@@ -115,7 +115,7 @@ Nine illustrative models are present in the original workstream:
 | Card fraud | `fraud_xgboost_python` | Python XGBoost |
 | Synthetic survival demo | `credit_cox_python` | Synthetic Cox proportional-hazards example; binary scoring/validation/monitoring not applicable |
 
-The eight credit/fraud binary models are tied to publicly available UCI and ULB datasets and explicit development fixtures. Model binaries and fixtures should be disclosed and reviewed for distribution before the public code migration. The synthetic Cox model is **not** a claim of real-world credit-risk assessment.
+The eight credit/fraud binary models are tied to publicly available UCI and ULB datasets and explicit development fixtures. The model artifacts and fixtures in this repository were built only from these public datasets; check the dataset licences before reuse. The synthetic Cox model is **not** a claim of real-world credit-risk assessment.
 
 ### Dataset catalogue
 
@@ -185,7 +185,7 @@ A hard FAIL cannot be overridden through ordinary conditional acceptance. REVIEW
 
 ## 4. Prerequisites
 
-**For a local demonstration after the code migration:**
+**For a local demonstration:**
 
 - Python **3.12** recommended (backend package declares Python 3.11+).
 - Node.js **22** and npm.
@@ -195,20 +195,16 @@ A hard FAIL cannot be overridden through ordinary conditional acceptance. REVIEW
 - Optional: OpenRouter API key for live paid LLM tasks.
 - Optional: R plus the relevant model packages for fitting/reproducing historical R models outside the app.
 
-The frozen sandbox image referenced by the original backend environment example is hosted on **private GHCR**. Public access to Roundhouse source does **not** automatically grant access to this container package. You can run some API/frontend and unit-test workflows without it, but **real scoring, parity and agent-container demonstrations require a functioning authorized sandbox**. A compatible replacement image must be explicitly reviewed and immutable; simply substituting an arbitrary image is unsafe and invalidates some comparisons.
+Real scoring, parity and agent runs need the Docker sandbox image described in section 5.3. You can pull it publicly or build it from `backend/harness/sandbox_image/`. Without it, the API, the frontend and the unit tests still run, but Docker-backed steps will fail. Do not substitute an arbitrary image: the scoring and parity evidence depends on the pinned one.
 
 ## 5. Installation and configuration
 
-### 5.1 Obtain the migrated source
+### 5.1 Clone the source
 
 ```bash
 git clone https://github.com/Merry-Go-Round-Org/roundhouse.git
 cd roundhouse
-
-test -d backend && test -d frontend && test -d legacy_models
 ```
-
-If the final test fails, the repository still lacks the application code. The earlier private workspace is the audited source, and the team must complete its migration before following the remaining commands.
 
 ### 5.2 Backend environment, dependencies and fresh database
 
@@ -235,7 +231,7 @@ This file has deliberately restricted permissions and must not be published. If 
 
 ### 5.3 Suggested local backend configuration
 
-Edit **`backend/.env`** (never commit it). The `.env.example` file in the migrated source is authoritative for the frozen image and supported defaults. The important options are:
+Edit **`backend/.env`** (never commit it). The `.env.example` file is authoritative for the frozen image and supported defaults. The important options are:
 
 ```dotenv
 APP_NAME="Model Risk Factory API"
@@ -249,24 +245,32 @@ ALLOW_LEGACY_REGISTRATION=false
 AUTH_COOKIE_SECURE=false
 # Optional for offline API-only tasks; required for real agent work:
 OPENROUTER_API_KEY=
-# For Docker-backed scoring, set the exact immutable digest in .env.example:
-# SCORING_IMAGE=ghcr.io/...@sha256:<approved digest>
+# For Docker-backed scoring and agent runs (see "Docker sandbox image" below):
+SCORING_IMAGE=<PUBLIC_IMAGE>@sha256:8083453253c3267caaa0fe36b43a287b9a986d5784148ad40714cd9d3fc2d80e
 ```
 
 The local defaults are deliberately **not** a public-hosting policy. For a remote HTTPS installation, use secure cookies, a trusted HTTPS origin, secure secret management, and an independently reviewed runtime deployment. Do not set CORS to wildcard or disable the origin guard to resolve login problems.
 
 **OpenRouter:** only configure `OPENROUTER_API_KEY` in the trusted backend environment. Restart both API and worker after changing it. Provider-backed work can incur real cost; the harness has per-task and cumulative budget controls but these are not free provider credits.
 
-**Docker:** authorized members can log in with a GitHub token that has `read:packages` access, then pull the **exact** image identified by the configured `SCORING_IMAGE`:
+**Docker sandbox image.** Scoring, parity and agent runs all use one frozen sandbox image. Use either route.
+
+*Route A: pull the published image (recommended; these are the exact bits our recorded evidence used).* No login is needed:
 
 ```bash
-docker login ghcr.io -u YOUR_GITHUB_USERNAME
-# Copy the approved immutable image reference from backend/.env.example
-docker pull ghcr.io/merry-go-round-org/sandbox@sha256:8083453253c3267caaa0fe36b43a287b9a986d5784148ad40714cd9d3fc2d80e
-docker info
+docker pull <PUBLIC_IMAGE>@sha256:8083453253c3267caaa0fe36b43a287b9a986d5784148ad40714cd9d3fc2d80e
 ```
 
-The above digest is the one found during the source audit. An authorized operator should still confirm the appropriate current release digest and supported target architecture. Do not publish a GHCR token.
+Set the same reference as `SCORING_IMAGE` in `backend/.env`. The image covers linux/amd64 and linux/arm64.
+
+*Route B: build it yourself from the pinned Dockerfile.* From `backend/`:
+
+```bash
+docker build -t roundhouse-sandbox:0.2 harness/sandbox_image
+docker image inspect --format '{{.Id}}' roundhouse-sandbox:0.2
+```
+
+Set `SCORING_IMAGE` to the printed `sha256:…` image ID; the backend accepts immutable local image IDs. The Dockerfile pins the base image, a Debian package snapshot and every Python package by hash. The build can still be slow because `snapshot.debian.org` is sometimes busy and the build retries. A self-built image has a different digest from the one behind our recorded evidence, and XGBoost scores in particular may differ slightly between builds (see section 12).
 
 ### 5.4 Frontend dependencies and browser proxy
 
@@ -376,7 +380,7 @@ For ULB, a parallel directory provides `creditcard.csv`, `dataset.json`, and `ul
 
 In the **Datasets** page, choose **Add dataset** and supply the source and descriptor, with the split file if desired. **The split field is optional for the two recognized, verified canonical dataset families.** When omitted, the backend reuses the exact UCI split or reconstructs the exact pinned ULB split. This preserves model compatibility; it does not create a new random allocation.
 
-**Important:** the audited implementation only recognizes the dataset IDs **`uci_credit`** and **`ulb_fraud`**. A proposed general feature to generate stratified splits and assign server-generated IDs to arbitrary new datasets was not yet integrated. Do not describe arbitrary dataset upload as supported.
+**Important:** the current implementation only recognizes the dataset IDs **`uci_credit`** and **`ulb_fraud`**. A proposed general feature to generate stratified splits and assign server-generated IDs to arbitrary new datasets was not yet integrated. Do not describe arbitrary dataset upload as supported.
 
 Successful verification checks include original source hash, descriptor columns, split hash, complete unique row membership, partition counts, and immutable dataset version. A changed source under an existing immutable version is rejected.
 
@@ -505,7 +509,7 @@ Soft-deleted records disappear from active portfolio views, but **underlying mod
 
 ### User management
 
-The audited authentication code supports authenticated sign-in/sign-out, an admin-only user listing, creation and disabling. **Re-enabling a disabled account was still an unresolved backend/frontend feature** in the audited implementation; do not claim it exists unless verified in a later commit. Separate developer, validator and approver accounts are important for demonstrating genuine review independence.
+The audited authentication code supports authenticated sign-in/sign-out, an admin-only user listing, creation and disabling. **Re-enabling a disabled account was still an unresolved backend/frontend feature** in the current implementation; do not claim it exists unless verified in a later commit. Separate developer, validator and approver accounts are important for demonstrating genuine review independence.
 
 ## 9. API and automation reference
 
@@ -610,7 +614,7 @@ Before a public release, verify at least:
 | **429 Too many sign-in attempts** | Repeated wrong credentials triggered a temporary lockout; check your local generated password file rather than guessing. |
 | API health passes, uploads stay queued | Health is only a liveness check. Inspect Redis, the Celery worker, upload/run status, and worker logs. |
 | Model uploaded but automatic document not available | Live agent work needs `OPENROUTER_API_KEY`, a running worker and correct provider model access. Restart services after changing configuration, then start an explicit supported new run. |
-| Docker error or container cannot start | Start Docker, check permissions, pull the immutable image digest and confirm platform architecture. A missing private GHCR entitlement cannot be solved by changing model-risk policy. |
+| Docker error or container cannot start | Start Docker and check permissions. Confirm that `SCORING_IMAGE` names an image you pulled or built (section 5.3) for your platform architecture. |
 | Dataset SHA or split mismatch | Use the original provider bytes and known canonical split, verify source and descriptor, do not modify hashes to force acceptance. |
 | Missing automatic split for new dataset | Arbitrary dataset families/generation are not integrated. Use the two supported canonical dataset IDs with matching descriptors. |
 | Model upload does not appear in inventory | Poll its persisted upload status and read validation errors. A queued upload is not a completed inventory record. |
@@ -681,7 +685,7 @@ The last consolidated **99-case human/chat-flow log dated 11 November 2026** rec
 | Unverified | 12 |
 | **Total** | **99** |
 
-Some older reported passes lacked retained independent artifacts. These figures **do not mean 99/99 tests passed**, and they must not be carried forward as fresh release acceptance after migration or code changes.
+Some older reported passes lacked retained independent artifacts. These figures **do not mean 99/99 tests passed**, and they must not be carried forward as acceptance of later code changes.
 
 ### Attribution and intended use
 
@@ -691,4 +695,4 @@ Roundhouse was produced for the EXL × UCD hackathon as a demonstration of agent
 
 ---
 
-**Technical architecture:** [ARCHITECTURE.md](ARCHITECTURE.md) · **Runtime API reference:** `/docs` and `/openapi.json` on a running backend · **Release readiness:** depends on successful source migration and independent test evidence.
+**Technical architecture:** [ARCHITECTURE.md](ARCHITECTURE.md) · **Runtime API reference:** `/docs` and `/openapi.json` on a running backend · **Status:** research prototype; see section 12 for limitations and recorded test results.

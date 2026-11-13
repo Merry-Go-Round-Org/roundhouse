@@ -1,7 +1,7 @@
 # Roundhouse — System Architecture
 
 > **Engineering design reference · 13 November 2026**  
-> Audited against the EXL Merry-Go-Round workspace implementation (source baseline `6f0e94dd37b8699617fcddce68437a7168327524`). This document explains the system's logical and deployment architecture, data flows, controls, and limitations. It describes the application intended for the public `roundhouse` repository; publication of these documents alone does **not** mean the source migration, deployment, or end-to-end acceptance is complete.
+> This document explains the logical and deployment architecture, data flows, controls and limitations of the Roundhouse prototype in this repository. It is not evidence of a production deployment.
 
 Roundhouse is an **agentic model-risk workbench** for legacy machine-learning model ingestion, documentation, R-to-Python modernization, independent validation, human governance, and drift monitoring. It separates **probabilistic agent analysis** from **deterministic measurement and authorization**.
 
@@ -120,7 +120,7 @@ The verified development topology is a **single-machine, multi-process setup**:
 
 The worker's payload is a **run or upload identifier**. The durable record, file paths, actor identity, and current state are resolved server-side. Celery's `worker_prefetch_multiplier=1` and late acknowledgements reduce queued-work ambiguity; the database claim prevents ordinary duplicate deliveries from executing the same run twice. Recovery is not a claim of perfect distributed exactly-once execution.
 
-**Production boundary:** there is no verified public hardened hosting configuration, cloud database migration strategy, multi-node locking design, or public, generally accessible sandbox image. The local topology should not be described as production-ready.
+**Production boundary:** there is no verified public hardened hosting configuration, cloud database schema-upgrade strategy, or multi-node locking design. The sandbox image is public at `<PUBLIC_IMAGE>` and can also be rebuilt from `backend/harness/sandbox_image/`. The local topology should not be described as production-ready.
 
 ### Browser and origin boundary
 
@@ -177,14 +177,14 @@ Uploaded dataset versions, model package snapshots, validation artifacts, review
 
 The API accepts multipart **original source data**, **`dataset.json` descriptor**, and an **optional split CSV**. The backend verifies SHA-256, required columns, source row identities, complete/disjoint train-validation-test membership, partition counts, and the immutable dataset ID/version. No public data file is stored in Git as part of the runtime upload.
 
-The two supported canonical families in the audited code are:
+The two supported canonical families in the current code are:
 
 | Family ID | Rows | Train | Validation | Test | Canonical rule |
 | --- | ---: | ---: | ---: | ---: | --- |
 | `uci_credit` | 30,000 | 17,981 | 6,037 | 5,982 | Frozen UCI ID-based split and pinned source bytes |
 | `ulb_fraud` | 284,807 | 162,992 | 61,675 | 60,140 | Frozen ULB split deterministically restored from transaction row sequence |
 
-If the split is **omitted**, the backend can copy the exact pinned UCI membership or restore the exact pinned ULB membership when the source and descriptor satisfy the existing family contract. It does **not** resplit the data using a new random seed. Although a future deterministic strategy and server-generated dataset families were proposed, `DatasetDescriptor` still restricts `dataset_id` to those two families in the audited implementation. New generic dataset IDs and generic automatic splits are therefore **not operational**.
+If the split is **omitted**, the backend can copy the exact pinned UCI membership or restore the exact pinned ULB membership when the source and descriptor satisfy the existing family contract. It does **not** resplit the data using a new random seed. Although a future deterministic strategy and server-generated dataset families were proposed, `DatasetDescriptor` still restricts `dataset_id` to those two families in the current implementation. New generic dataset IDs and generic automatic splits are therefore **not operational**.
 
 ### Path B — structured model package
 
@@ -364,7 +364,7 @@ These controls **reduce risk** but do not establish formal correctness, regulato
 2. **Cross-platform reproducibility:** some XGBoost artifacts exhibit numerical differences across macOS/Linux or library environments; track the comparison outcome, not a universal PASS.
 3. **Domain scope:** UCI predicts next-month default, not a one-year PD; ULB lacks demographic labels for meaningful demographic fairness assessment. The Cox artifact is a synthetic-only illustration.
 4. **Incomplete generic dataset feature:** canonical two-file split reuse exists; new family IDs and arbitrary deterministic automatic splits were planned but not fully integrated.
-5. **Runtime dependencies:** the pinned GHCR image was private at audit time; public cloning alone is insufficient for Docker-backed scoring.
+5. **Runtime dependencies:** Docker-backed scoring needs the sandbox image, either pulled from `<PUBLIC_IMAGE>` or built locally (README section 5.3).
 6. **Operational maturity:** SQLite `create_all`, local filesystem artifacts, and a single-machine Celery setup are demo choices, not hardened service architecture.
 7. **Testing maturity:** the 11 November 2026 E2E log counted **70 pass / 5 fail / 9 partial / 2 blocked / 1 inconclusive / 12 unverified**. Subsequent edits require new acceptance evidence; this document is not a claim that all 99 cases passed.
 8. **Governance:** acceptance/fairness thresholds and all human decisions require authorized owners and evidence. Model approval must never be inferred solely from automated checks.
